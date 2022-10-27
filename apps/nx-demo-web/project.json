@@ -1,0 +1,84 @@
+{
+  "name": "nx-demo-web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/nx-demo-web/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/nx-demo-web",
+        "index": "apps/nx-demo-web/src/index.html",
+        "baseHref": "/",
+        "main": "apps/nx-demo-web/src/main.tsx",
+        "polyfills": "apps/nx-demo-web/src/polyfills.ts",
+        "tsConfig": "apps/nx-demo-web/tsconfig.app.json",
+        "assets": [
+          "apps/nx-demo-web/src/favicon.ico",
+          "apps/nx-demo-web/src/assets"
+        ],
+        "styles": ["apps/nx-demo-web/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "apps/nx-demo-web/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/nx-demo-web/src/environments/environment.ts",
+              "with": "apps/nx-demo-web/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "nx-demo-web:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "nx-demo-web:build:development"
+        },
+        "production": {
+          "buildTarget": "nx-demo-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/nx-demo-web/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/nx-demo-web/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
